@@ -28,5 +28,18 @@ project Hello_Prog is
       end case;
    end Linker;
 
+   package Compiler is
+
+      case Build_Mode is
+
+         when "Profiling" =>
+
+         when "Optimizing" =>
+
+         when "Debugging" =>
+            for Switches ("ada") use ("-gnatw.eDH.Y", "-gnatf");
+      end case;
+   end Compiler;
+
 end Hello_Prog;
 
