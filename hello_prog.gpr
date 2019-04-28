@@ -35,6 +35,7 @@ project Hello_Prog is
          when "Profiling" =>
 
          when "Optimizing" =>
+            for Switches ("ada") use ("-gnatp", "-gnatn", "-O2");
 
          when "Debugging" =>
             for Switches ("ada") use ("-gnatVa", "-gnatw.eDH.Y", "-gnatf", "-fstack-check", "-g", "-gnato", "-gnatE", "-gnata");
