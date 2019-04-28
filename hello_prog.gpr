@@ -20,6 +20,7 @@ project Hello_Prog is
       case Build_Mode is
 
          when "Profiling" =>
+            for Switches ("ada") use ("-g", "-pg");
 
          when "Optimizing" =>
 
@@ -33,6 +34,7 @@ project Hello_Prog is
       case Build_Mode is
 
          when "Profiling" =>
+            for Switches ("ada") use ("-g", "-pg");
 
          when "Optimizing" =>
             for Switches ("ada") use ("-gnatp", "-gnatn", "-O2");
