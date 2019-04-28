@@ -11,5 +11,9 @@ project Hello_Prog is
       for Default_Switches ("ada") use ("-M120", "-W8");
    end Pretty_Printer;
 
+   package Binder is
+      for Switches ("ada") use ("-Es");
+   end Binder;
+
 end Hello_Prog;
 
