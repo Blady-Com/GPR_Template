@@ -15,5 +15,18 @@ project Hello_Prog is
       for Switches ("ada") use ("-Es");
    end Binder;
 
+   package Linker is
+
+      case Build_Mode is
+
+         when "Profiling" =>
+
+         when "Optimizing" =>
+
+         when "Debugging" =>
+            for Switches ("ada") use ("-g", "-Wl,-no_pie");
+      end case;
+   end Linker;
+
 end Hello_Prog;
 
