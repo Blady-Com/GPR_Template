@@ -3,9 +3,13 @@ project Hello_Prog is
    for Source_Dirs use ("src");
    for Object_Dir use "obj";
    for Main use ("hello.adb");
-   type BUILD_MODE_Type is
+   type Build_Mode_Type is
       ("Profiling", "Optimizing", "Debugging");
-   BUILD_MODE : BUILD_MODE_Type := external ("BUILD_MODE", "Debugging");
+   Build_Mode : Build_Mode_Type := external ("BUILD_MODE", "Debugging");
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-M120", "-W8");
+   end Pretty_Printer;
 
 end Hello_Prog;
 
