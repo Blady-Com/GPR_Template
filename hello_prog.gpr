@@ -31,16 +31,22 @@ project Hello_Prog is
 
    package Compiler is
 
+      Common_Options := ("-gnatW8", "-gnatU", "-gnatf");
+      --  Common options used for the build modes
+
       case Build_Mode is
 
          when "Profiling" =>
-            for Switches ("ada") use ("-g", "-pg");
+            for Switches ("ada") use Common_Options & ("-g", "-pg");
 
          when "Optimizing" =>
-            for Switches ("ada") use ("-gnatp", "-gnatn", "-O2");
+            for Switches ("ada") use Common_Options & ("-gnatp", "-gnatn", "-O2");
 
          when "Debugging" =>
-            for Switches ("ada") use ("-gnatVa", "-gnatw.eDH.Y", "-gnatf", "-fstack-check", "-g", "-gnato", "-gnatE", "-gnata", "-gnateA", "-gnateE", "-gnateF", "-gnateV");
+            for Switches ("ada") use Common_Options & ("-gnatVaep", "-gnatw.eDH.Y",
+             "-fstack-check", "-g", "-gnato", "-gnatE", "-gnata", "-gnateA",
+              "-gnateE", "-gnateF", "-gnateV", "-Wall",
+              "-gnatec=" & Hello_Prog'Project_Dir & "pragma_debug.adc");
       end case;
    end Compiler;
 
