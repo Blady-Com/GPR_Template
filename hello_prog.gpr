@@ -2,6 +2,7 @@ project Hello_Prog is
 
    for Source_Dirs use ("src");
    for Object_Dir use "obj";
+   for Exec_Dir use "bin";
    for Main use ("hello.adb");
    type Build_Mode_Type is
       ("Profiling", "Optimizing", "Debugging");
@@ -16,13 +17,12 @@ project Hello_Prog is
    end Binder;
 
    package Linker is
-
       case Build_Mode is
-
          when "Profiling" =>
-            for Switches ("ada") use ("-g", "-pg");
+            for Switches ("ada") use ("-g", "-pg", "-Wl,-no_pie");
 
          when "Optimizing" =>
+            for Switches ("ada") use ("-Wl,-no_pie");
 
          when "Debugging" =>
             for Switches ("ada") use ("-g", "-Wl,-no_pie");
@@ -30,12 +30,9 @@ project Hello_Prog is
    end Linker;
 
    package Compiler is
-
-      Common_Options := ("-gnatW8", "-gnatU", "-gnatf");
       --  Common options used for the build modes
-
+      Common_Options := ("-gnatW8", "-gnatU", "-gnatf");
       case Build_Mode is
-
          when "Profiling" =>
             for Switches ("ada") use Common_Options & ("-g", "-pg");
 
