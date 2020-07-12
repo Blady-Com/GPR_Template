@@ -1,5 +1,8 @@
+with "shared.gpr";
+
 project Hello_Prog is
 
+   for Languages use ("Ada");
    for Source_Dirs use ("src");
    for Object_Dir use "obj";
    for Exec_Dir use "bin";
@@ -7,51 +10,11 @@ project Hello_Prog is
 
    for Main use ("hello.adb");
 
-   type Build_Mode_Type is
-      ("Profiling", "Optimizing", "Debugging", "Release");
-   Build_Mode : Build_Mode_Type := external ("BUILD_MODE", "Debugging");
-
-   package Pretty_Printer is
-      for Default_Switches ("ada") use ("-M120", "-W8");
-   end Pretty_Printer;
-
-   package Binder is
-      for Switches ("ada") use ("-Es");
-   end Binder;
-
-   package Linker is
-      case Build_Mode is
-         when "Profiling" =>
-            for Switches ("ada") use ("-g", "-pg", "-Wl,-no_pie");
-
-         when "Optimizing" =>
-            for Switches ("ada") use ("-Wl,-no_pie");
-
-         when "Debugging" =>
-            for Switches ("ada") use ("-g", "-Wl,-no_pie");
-
-         when "Release" =>
-            null;
-      end case;
-   end Linker;
-
-   package Compiler is
-      --  Common options used for the build modes
-      Common_Options := ("-gnatW8", "-gnatU", "-gnatf");
-      case Build_Mode is
-         when "Profiling" =>
-            for Switches ("ada") use Common_Options & ("-g", "-pg");
-
-         when "Optimizing" | "Release" =>
-            for Switches ("ada") use Common_Options & ("-gnatp", "-gnatn", "-O2");
-
-         when "Debugging" =>
-            for Switches ("ada") use Common_Options & ("-gnatVaep", "-gnatw.eDH.Y",
-             "-fstack-check", "-g", "-gnato", "-gnatE", "-gnata", "-gnateA",
-              "-gnateE", "-gnateF", "-gnateV", "-Wall",
-              "-gnatec=" & Hello_Prog'Project_Dir & "pragma_debug.adc");
-      end case;
-   end Compiler;
+   package Builder  renames Shared.Builder;
+   package Compiler renames Shared.Compiler;
+   package Binder   renames Shared.Binder;
+   package Linker   renames Shared.Linker;
+   package Pretty_Printer renames Shared.Pretty_Printer;
 
 end Hello_Prog;
 
