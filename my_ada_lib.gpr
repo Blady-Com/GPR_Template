@@ -1,0 +1,35 @@
+with "shared.gpr";
+
+library project My_Ada_Lib is
+   type Library_Type_Type is ("static", "static-pic", "relocatable");
+   Library_Type : Library_Type_Type := external ("LIBRARY_TYPE", "static");
+
+   So_Ext := "";
+   case Shared.Target_OS is
+      when "Linux" =>
+         So_Ext := ".so";
+      when "Windows" =>
+         So_Ext := ".dll";
+      when "macOS" =>
+         So_Ext := ".dylib";
+      when others =>
+         null;
+   end case;
+   
+   Version := "0.0";
+
+   for Languages use ("Ada");
+   for Library_Name use "My_Ada_Lib";
+   for Library_Kind use Library_Type;
+   for Source_Dirs use ("src");
+   for Object_Dir  use "obj/" & Project'Library_Name & "-" & Project'Library_Kind;
+   for Library_Dir use "lib/" & Project'Library_Name & "-" & Project'Library_Kind;
+   for Library_Version use "lib" & Project'Library_Name & So_Ext & "." & Version;
+   for Create_Missing_Dirs use "True";
+
+   package Builder  renames Shared.Builder;
+   package Compiler renames Shared.Compiler;
+   package Binder   renames Shared.Binder;
+   package Pretty_Printer renames Shared.Pretty_Printer;
+
+end My_Ada_Lib;
